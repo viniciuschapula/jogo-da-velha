@@ -93,15 +93,20 @@ namespace MyApp
 
         static bool VerificarVitoria()
         {
+            //Matriz de combinações possiveis
             int[,] combinacoes = {
-            {0,1,2}, {3,4,5}, {6,7,8},
-            {0,3,6}, {1,4,7}, {2,5,8},
-            {0,4,8}, {2,4,6}
-        };
+            {0,1,2}, {3,4,5}, {6,7,8}, //Linhas
+            {0,3,6}, {1,4,7}, {2,5,8}, //Colunas
+            {0,4,8}, {2,4,6} //Diagonais
+            };
 
+            //Loop de acordo com o numero de matrizes
             for (int i = 0; i < combinacoes.GetLength(0); i++)
             {
+                //Captura o valor da matriz que esta na vez
                 int a = combinacoes[i, 0], b = combinacoes[i, 1], c = combinacoes[i, 2];
+
+                //Verifica se a combinação da matriz da vez é uma combinação de vitoria
                 if (tabuleiro[a] == jogadorAtual && tabuleiro[b] == jogadorAtual && tabuleiro[c] == jogadorAtual)
                     return true;
             }
