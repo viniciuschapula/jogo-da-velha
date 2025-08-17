@@ -15,7 +15,7 @@ namespace MyApp
             while (TelaInicial)
             {
                 Console.WriteLine("JOGO DA VELHA"); // Mostra o título na tela
-                Console.Write("Deseja Sair do jogo? (s/n): "); // Mostra na tela a opção de para o programa
+                Console.Write("Sair do jogo? (s/n): "); // Mostra na tela a opção de para o programa
                 string sair = Console.ReadLine().ToLower(); //Não faz diferença se digitar maiúsculo ou minúsculo, aceita o que o jogador digitar
                 if (sair == "s") // Se o jogador digitar s será encerrado
                 {
@@ -75,18 +75,51 @@ namespace MyApp
                 else
                     JogadaJogador(); // Caso contrário executa a jogada do jogador
 
-                if (VerificarVitoria())
+                if (VerificarVitoria()) 
                 {
                     ExibirTabuleiro();
-                    Console.WriteLine($"Jogador {jogadorAtual} venceu!");
-                    break; // Encerrando o jogo
+                    Console.WriteLine($"Jogador {jogadorAtual} venceu!"); //Mostra na tela que o jogador ou computador venceu
+                    Console.WriteLine("\nDeseja jogar novamente? (s/n)"); //Mostra na tela a opção de sair
+                    string resposta = Console.ReadLine().ToLower();
+
+                    if (resposta == "n")
+                    {
+                        return; // sai do jogo
+                    }
+                    else
+                    {
+                        // Reinicia o tabuleiro mostrando 1 à 9 novamente.
+                        for (int i = 0; i < tabuleiro.Length; i++)
+                            tabuleiro[i] = (char)('1' + i);
+
+                        jogadorAtual = 'X'; // volta pro X começar
+                        Console.Clear();     // limpa a tela antes do novo jogo
+                        continue;
+                    }
                 }
 
                 if (VerificarEmpate())
                 {
                     ExibirTabuleiro();
                     Console.WriteLine("Empate!");
-                    break; // Encerrando o jogo
+                    Console.WriteLine("\nJogar novamente? (s/n)");
+                    string resposta = Console.ReadLine().ToLower();
+
+                    if (resposta == "n")
+                    {
+                        return; // sai do jogo
+                    }
+                    else // reinicia
+                    {
+                        // Reinicia o tabuleiro mostrando 1 à 9 novamente.
+                        for (int i = 0; i < tabuleiro.Length; i++)
+                            tabuleiro[i] = (char)('1' + i);
+
+                        jogadorAtual = 'X'; // volta pro X começar
+                        Console.Clear();     // limpa a tela antes do novo jogo
+                        continue;
+                    }
+                    
                 }
 
                 TrocarJogador();
@@ -194,10 +227,10 @@ namespace MyApp
         static int EncontrarJogadaVencedora(char simbolo)
         {
             int[,] combinacoes = {
-        {0,1,2}, {3,4,5}, {6,7,8}, // Linhas
-        {0,3,6}, {1,4,7}, {2,5,8}, // Colunas
-        {0,4,8}, {2,4,6} // Diagonais
-    };
+                {0,1,2}, {3,4,5}, {6,7,8}, // Linhas
+                {0,3,6}, {1,4,7}, {2,5,8}, // Colunas
+                {0,4,8}, {2,4,6} // Diagonais
+            };
 
             for (int i = 0; i < combinacoes.GetLength(0); i++)
             {
@@ -235,6 +268,8 @@ namespace MyApp
 
         static void TrocarJogador()
         {
+            // Se o jogador atual for X, passa a ser O.
+            // Se não for X (ou seja, for O), passa a ser X, por isso os : servem, eles verificam se não é, e o ponto de interrogação verifica se é verdadeiro.
             jogadorAtual = jogadorAtual == 'X' ? 'O' : 'X';
         }
 
