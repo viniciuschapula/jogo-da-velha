@@ -14,38 +14,79 @@ namespace MyApp
         {
             while (TelaInicial)
             {
-                Console.WriteLine("JOGO DA VELHA");
+                Console.WriteLine("JOGO DA VELHA"); // Mostra o título na tela
+                Console.Write("Deseja Sair do jogo? (s/n): "); // Mostra na tela a opção de para o programa
+                string sair = Console.ReadLine().ToLower(); //Não faz diferença se digitar maiúsculo ou minúsculo, aceita o que o jogador digitar
+                if (sair == "s") // Se o jogador digitar s será encerrado
+                {
+                    return; // Sai do Main, encerrando o jogo
+                }
                 Console.WriteLine("Deseja jogar contra o computador? (s/n): ");
+
                 contraPC = Console.ReadLine().ToLower() == "s";
                 Console.Clear();
 
-                Console.WriteLine("Escolha a dificuldade: ");
-                Console.WriteLine("1 - Facil \n 2 - Medio \n 3 - Dificil");
+                if (contraPC) // Se for jogar contra o computador
+                {
+                    Console.WriteLine("Você escolheu jogar contra o computador!");
+                    Console.WriteLine("Jogador será X e o Computador será O.");
+                    jogadorAtual = 'X'; // jogador sempre começa como X contra o Computador
+                }
+                else // Se for jogar contra outro jogador
+                {
+                    //Mostra na tela o modo de jogo e qual opção o jogador gostara de ir
+                    Console.WriteLine("Modo Jogador vs Jogador ativado!");
+                    Console.Write("Jogador 1 gostaria de ser X ou O? ");
 
-                string codigoDificuldade = Console.ReadLine();
-                SetDificuldade(codigoDificuldade);
+                    // Converte a tecla digitada para minúsculo independete se estiver em maiúsculo
+                    char escolha = Char.ToLower(Console.ReadKey().KeyChar);
+                    
+                    // Pula linha após a entrada do usuário
+                    Console.WriteLine();
+                    
+                    // Define jogadorAtual baseado na escolha, se inválida, assume 'X' por padrão
+                    jogadorAtual = (escolha == 'X' || escolha == 'O') ? escolha : 'X';
+
+                    // Player 2 recebe automaticamente o outro símbolo
+                    char jogador2 = jogadorAtual == 'X' ? 'O' : 'X';
+
+                    // Mostra para o Player 2 qual símbolo ele terá
+                    Console.WriteLine($"Jogador 2 será {jogador2}.");
+                }
+
+                Console.WriteLine("Pressione ENTER para continuar...");
+                Console.ReadLine();// Aguarda o jogador pressionar ENTER antes de continuar
+                Console.Clear(); // Limpa a tela do console
+
+                Console.WriteLine("Escolha a dificuldade: ");
+                Console.WriteLine("1 - Facil  \n2 - Medio  \n3 - Dificil"); // Mostra na tela qual número o jogador deve usar para dificuldade, e \n pula a linha
+                string codigoDificuldade = Console.ReadLine(); // Lê o numero dito e implementa em codigoDificuldade
+                SetDificuldade(codigoDificuldade); // Chama o método que valida e aplica a dificuldade
             }
 
-            while (true)
+            while (true) // É o loop principal que faz o jogo funcionar, só ira parar quando haver vencedor ou empate
             {
+                // Chama a função ExibirTabuleiro() para mostrar o tabuleiro atualizado na tela
                 ExibirTabuleiro();
-                if (jogadorAtual == 'O' && contraPC)
-                    JogadaComputador();
+
+                if (jogadorAtual == 'O' && contraPC) //Se for a vez do jogador
+
+                    JogadaComputador(); // Executa a jogada do computador
                 else
-                    JogadaJogador();
+                    JogadaJogador(); // Caso contrário executa a jogada do jogador
 
                 if (VerificarVitoria())
                 {
                     ExibirTabuleiro();
                     Console.WriteLine($"Jogador {jogadorAtual} venceu!");
-                    break;
+                    break; // Encerrando o jogo
                 }
 
                 if (VerificarEmpate())
                 {
                     ExibirTabuleiro();
                     Console.WriteLine("Empate!");
-                    break;
+                    break; // Encerrando o jogo
                 }
 
                 TrocarJogador();
@@ -54,7 +95,9 @@ namespace MyApp
 
         static void ExibirTabuleiro()
         {
-            Console.Clear();
+            Console.Clear(); // Limpa a tela para colocar o tabuleiro.
+
+            // Desenha o tabuleiro com as posições e símbolos preenchidos
             Console.WriteLine("-------------");
             Console.WriteLine($"| {tabuleiro[0]} | {tabuleiro[1]} | {tabuleiro[2]} |");
             Console.WriteLine($"| {tabuleiro[3]} | {tabuleiro[4]} | {tabuleiro[5]} |");
@@ -84,19 +127,19 @@ namespace MyApp
             }
         }
 
-        //static void JogadaComputador()
-        //{
-        //    Random rand = new Random();
-        //    int posicao;
-        //    do
-        //    {
-        //        posicao = rand.Next(1, 10);
-        //    } while (tabuleiro[posicao - 1] == 'X' || tabuleiro[posicao - 1] == 'O');
+        /*static void JogadaComputador()
+        {
+            Random rand = new Random();
+            int posicao;
+        do
+        {
+            posicao = rand.Next(1, 10);
+        } while (tabuleiro[posicao - 1] == 'X' || tabuleiro[posicao - 1] == 'O');
 
-        //    Console.WriteLine($"Computador escolheu a posição {posicao}");
-        //    tabuleiro[posicao - 1] = jogadorAtual;
-        //    System.Threading.Thread.Sleep(1000);
-        //}
+        Console.WriteLine($"Computador escolheu a posição {posicao}");
+        tabuleiro[posicao - 1] = jogadorAtual;
+        System.Threading.Thread.Sleep(1000);
+        }*/
 
         static void JogadaComputador()
         {
@@ -151,9 +194,9 @@ namespace MyApp
         static int EncontrarJogadaVencedora(char simbolo)
         {
             int[,] combinacoes = {
-        {0,1,2}, {3,4,5}, {6,7,8}, //Linhas
-        {0,3,6}, {1,4,7}, {2,5,8}, //Colunas
-        {0,4,8}, {2,4,6} //Diagonais
+        {0,1,2}, {3,4,5}, {6,7,8}, // Linhas
+        {0,3,6}, {1,4,7}, {2,5,8}, // Colunas
+        {0,4,8}, {2,4,6} // Diagonais
     };
 
             for (int i = 0; i < combinacoes.GetLength(0); i++)
@@ -197,21 +240,21 @@ namespace MyApp
 
         static bool VerificarVitoria()
         {
-            //Matriz de combinações possiveis
+            // Matriz de combinações possiveis
             int[,] combinacoes = {
-            {0,1,2}, {3,4,5}, {6,7,8}, //Linhas
-            {0,3,6}, {1,4,7}, {2,5,8}, //Colunas
-            {0,4,8}, {2,4,6} //Diagonais
+            {0,1,2}, {3,4,5}, {6,7,8}, // Linhas
+            {0,3,6}, {1,4,7}, {2,5,8}, // Colunas
+            {0,4,8}, {2,4,6} // Diagonais
             };
 
-            //Loop de acordo com o numero de matrizes
+            // Loop de acordo com o numero de matrizes
             for (int i = 0; i < combinacoes.GetLength(0); i++)
             {
-                //Captura o valor da matriz que esta na vez
-                int a = combinacoes[i, 0], b = combinacoes[i, 1], c = combinacoes[i, 2];
+                // Captura o valor da matriz que esta na vez
+                int posicaoA = combinacoes[i, 0], posicaoB = combinacoes[i, 1], posicaC = combinacoes[i, 2];
 
-                //Verifica se a combinação da matriz da vez é uma combinação de vitoria
-                if (tabuleiro[a] == jogadorAtual && tabuleiro[b] == jogadorAtual && tabuleiro[c] == jogadorAtual)
+                // Verifica se a combinação da matriz da vez é uma combinação de vitoria
+                if (tabuleiro[posicaoA] == jogadorAtual && tabuleiro[posicaoB] == jogadorAtual && tabuleiro[posicaC] == jogadorAtual)
                     return true;
             }
             return false;
@@ -228,6 +271,7 @@ namespace MyApp
         static void SetDificuldade(string codigoDificuldade)
         {
             Dificuldade codigo;
+
             if (Enum.TryParse(codigoDificuldade, out codigo)){
                 TelaInicial = false;
                 dificuldade = codigo;
@@ -235,6 +279,7 @@ namespace MyApp
             else
             {
                 Console.WriteLine("Digite um código de dificuldade valido! \n Codigos Validos: 1, 2, 3");
+
                 TelaInicial = true;
             }
         }
