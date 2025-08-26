@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace MyApp
 {
@@ -20,6 +21,8 @@ namespace MyApp
         static int PontosEmpates { get; set; }
         static int PontosVitoriaPlayer1 { get; set; }
         static int PontosVitoriaPlayer2 { get; set; }
+        static int PontosVitoriaComputador { get; set; }
+
 
         static void Main()
         {
@@ -28,166 +31,15 @@ namespace MyApp
                 Console.Clear();
                 ResetarVariaveis();
 
-                while (TelaInicial)
-                {
-                    Console.Clear();
-                    Console.WriteLine("JOGO DA VELHA"); // Mostra o título na tela
-                    Console.WriteLine("1 - JOGAR"); // Mostra na tela a opção de para o programa
-                    Console.WriteLine("2 - RANKING"); // Mostra na tela a opção de para o programa
-                    Console.WriteLine("3 - SAIR"); // Mostra na tela a opção de para o programa
-                    int[] opcoesValidas = { 1, 2, 3 };
-                    string opcaoSelecionada = Console.ReadLine();
-                    bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
+                ExibirTelaInicial();
 
-                    if (!opcaoValida)
-                    {
-                        Console.WriteLine("Selecione uma opção válida!");
-                    }
-                    else
-                    {
-                        switch (opcaoSelecionada)
-                        {
-                            case "1":
-                                TelaInicial = false;
-                                break;
-                            case "2":
-                                ExibirRanking();
-                                break;
-                            case "3":
-                                return;
-                        }
-                    }
-                }
+                ExibirModoDeJogo();
 
+                ExibirSelecaoDificuldade();
 
-                while (TelaPlayerOuPC)
-                {
-                    Console.Clear();
-                    Console.WriteLine("1 - PLAYER VS. PLAYER");
-                    Console.WriteLine("2 - PLAYER VS. COMPUTADOR");
+                ExibirSelecaoPlayers();
 
-                    int[] opcoesValidas = { 1, 2 };
-                    string opcaoSelecionada = Console.ReadLine();
-                    bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
-
-                    if (!opcaoValida)
-                    {
-                        Console.WriteLine("Selecione uma opção válida!");
-                        TelaPlayerOuPC = true;
-                    }
-                    else
-                    {
-                        contraPC = opcaoSelecionada == "1" ? false : true;
-                        TelaPlayerOuPC = false;
-                    }
-                }
-
-                while (TelaDificuldade && contraPC)
-                {
-                    Console.Clear();
-
-                    Console.WriteLine("Você escolheu jogar contra o computador!");
-                    Console.WriteLine("Jogador será X e o Computador será O.");
-                    jogadorAtual = 'X'; // jogador sempre começa como X contra o Computador
-
-                    Console.Clear();
-
-                    Console.WriteLine("Escolha a dificuldade: ");
-                    Console.WriteLine("1 - Facil  \n2 - Medio  \n3 - Dificil"); // Mostra na tela qual número o jogador deve usar para dificuldade, e \n pula a linha
-                    int[] opcoesValidas = { 1, 2, 3 };
-                    string opcaoSelecionada = Console.ReadLine();
-                    bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
-
-                    if (!opcaoValida)
-                    {
-                        Console.WriteLine("Selecione uma opção válida!");
-                        TelaDificuldade = true;
-                    }
-                    else
-                    {
-                        SetDificuldade(opcaoSelecionada); // Chama o método que valida e aplica a dificuldade
-                        TelaDificuldade = false;
-                    }
-                }
-
-
-                while (TelaPlayer && !contraPC) // Se for jogar contra outro jogador
-                {
-                    Console.Clear();
-                    //Mostra na tela o modo de jogo e qual opção o jogador gostara de ir
-                    Console.WriteLine("JOGADOR 1 ESCOLHA:");
-                    Console.WriteLine("1 - X ");
-                    Console.WriteLine("2 - O");
-
-                    int[] opcoesValidas = { 1, 2 };
-                    string opcaoSelecionada = Console.ReadLine();
-                    bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
-
-                    if (!opcaoValida)
-                    {
-                        Console.WriteLine("Selecione uma opção válida!");
-                        TelaPlayer = true;
-                    }
-                    else
-                    {
-                        // Pula linha após a entrada do usuário
-                        Console.WriteLine();
-
-                        // Define jogadorAtual baseado na escolha, se inválida, assume 'X' por padrão
-                        jogadorAtual = opcaoSelecionada == "1" ? 'X' : 'O';
-
-                        // Player 2 recebe automaticamente o outro símbolo
-                        char jogador2 = jogadorAtual == 'X' ? 'O' : 'X';
-
-                        Console.Clear(); // Limpa a tela do console
-                        // Mostra para o Player 2 qual símbolo ele terá
-                        Console.WriteLine($"Jogador 1 será {jogadorAtual}.");
-                        Console.WriteLine($"Jogador 2 será {jogador2}.");
-                        Console.WriteLine("Pressione ENTER para continuar...");
-                        Console.ReadLine();// Aguarda o jogador pressionar ENTER antes de continuar
-                        Console.Clear(); // Limpa a tela do console
-                        TelaPlayer = false;
-                    }
-                }
-
-                while (TelaJogo)
-                {
-                    ExibirTabuleiro();
-
-                    if (jogadorAtual == 'O' && contraPC)
-                        JogadaComputador();
-                    else
-                        JogadaJogador();
-
-                    var jogadorAnterior = jogadorAtual;
-
-                    bool verificaVitoria = VerificarVitoria();
-
-                    bool verificaEmpate = VerificarEmpate();
-
-                    TrocarJogador();
-
-                    if (verificaVitoria == true)
-                    {
-                        if (jogadorAnterior == 'X')
-                            PontosVitoriaPlayer1++;
-                        else
-                            PontosVitoriaPlayer2++;
-
-                        Console.WriteLine($"Jogador {jogadorAnterior} venceu!");
-
-                        TelaFinal(ref TelaJogo);
-                    }
-
-                    if (verificaEmpate)
-                    {
-                        PontosEmpates++;
-
-                        Console.WriteLine($"Empate!");
-
-                        TelaFinal(ref TelaJogo);
-                    }
-                }
+                ExibirTelaDoJogo();
             }
         }
 
@@ -203,10 +55,237 @@ namespace MyApp
             Console.WriteLine("-------------");
         }
 
-        static void TelaFinal(ref bool telaChamada)
+        static void ExibirTelaInicial()
+        {
+            while (TelaInicial)
+            {
+                Console.Clear();
+                Console.WriteLine("JOGO DA VELHA"); // Mostra o título na tela
+                Console.WriteLine("1 - JOGAR"); // Mostra na tela a opção de para o programa
+                Console.WriteLine("2 - RANKING"); // Mostra na tela a opção de para o programa
+                Console.WriteLine("3 - SAIR"); // Mostra na tela a opção de para o programa
+                int[] opcoesValidas = { 1, 2, 3 };
+                string opcaoSelecionada = Console.ReadLine();
+                bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
+
+                if (!opcaoValida)
+                {
+                    Console.WriteLine("Selecione uma opção válida!");
+                }
+                else
+                {
+                    switch (opcaoSelecionada)
+                    {
+                        case "1":
+                            TelaInicial = false;
+                            break;
+                        case "2":
+                            ExibirRanking();
+                            break;
+                        case "3":
+                            Environment.Exit(0);
+                            return;
+                    }
+                }
+            }
+
+            TelaInicial = true;
+        }
+
+        static void ExibirModoDeJogo()
+        {
+            while (TelaPlayerOuPC)
+            {
+                Console.Clear();
+                Console.WriteLine("1 - PLAYER VS. PLAYER");
+                Console.WriteLine("2 - PLAYER VS. COMPUTADOR");
+
+                int[] opcoesValidas = { 1, 2 };
+                string opcaoSelecionada = Console.ReadLine();
+                bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
+
+                if (!opcaoValida)
+                {
+                    Console.WriteLine("Selecione uma opção válida!");
+                    TelaPlayerOuPC = true;
+                }
+                else
+                {
+                    contraPC = opcaoSelecionada == "1" ? false : true;
+                    TelaPlayerOuPC = false;
+                }
+            }
+
+            TelaPlayerOuPC = true;
+        }
+
+        static void ExibirSelecaoDificuldade()
+        {
+            while (TelaDificuldade && contraPC)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Você escolheu jogar contra o computador!");
+                Console.WriteLine("Jogador será X e o Computador será O.");
+                jogadorAtual = 'X'; // jogador sempre começa como X contra o Computador
+
+                Console.Clear();
+
+                Console.WriteLine("Escolha a dificuldade: ");
+                Console.WriteLine("1 - Facil  \n2 - Medio  \n3 - Dificil"); // Mostra na tela qual número o jogador deve usar para dificuldade, e \n pula a linha
+                int[] opcoesValidas = { 1, 2, 3 };
+                string opcaoSelecionada = Console.ReadLine();
+                bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
+
+                if (!opcaoValida)
+                {
+                    Console.WriteLine("Selecione uma opção válida!");
+                    TelaDificuldade = true;
+                }
+                else
+                {
+                    SetDificuldade(opcaoSelecionada); // Chama o método que valida e aplica a dificuldade
+                    TelaDificuldade = false;
+                }
+            }
+
+            TelaDificuldade = true;
+        }
+
+        static void ExibirSelecaoPlayers()
+        {
+            while (TelaPlayer && !contraPC) // Se for jogar contra outro jogador
+            {
+                Console.Clear();
+                //Mostra na tela o modo de jogo e qual opção o jogador gostara de ir
+                Console.WriteLine("JOGADOR 1 ESCOLHA:");
+                Console.WriteLine("1 - X ");
+                Console.WriteLine("2 - O");
+
+                int[] opcoesValidas = { 1, 2 };
+                string opcaoSelecionada = Console.ReadLine();
+                bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
+
+                if (!opcaoValida)
+                {
+                    Console.WriteLine("Selecione uma opção válida!");
+                    TelaPlayer = true;
+                }
+                else
+                {
+                    // Pula linha após a entrada do usuário
+                    Console.WriteLine();
+
+                    // Define jogadorAtual baseado na escolha, se inválida, assume 'X' por padrão
+                    jogadorAtual = opcaoSelecionada == "1" ? 'X' : 'O';
+
+                    // Player 2 recebe automaticamente o outro símbolo
+                    char jogador2 = jogadorAtual == 'X' ? 'O' : 'X';
+
+                    Console.Clear(); // Limpa a tela do console
+                                     // Mostra para o Player 2 qual símbolo ele terá
+                    Console.WriteLine($"Jogador 1 será {jogadorAtual}.");
+                    Console.WriteLine($"Jogador 2 será {jogador2}.");
+                    Console.WriteLine("Pressione ENTER para continuar...");
+                    Console.ReadLine();// Aguarda o jogador pressionar ENTER antes de continuar
+                    Console.Clear(); // Limpa a tela do console
+                    TelaPlayer = false;
+                }
+            }
+
+            TelaPlayer = true;
+        }
+
+        static void ExibirTelaDoJogo()
+        {
+            while (TelaJogo)
+            {
+                ExibirTabuleiro();
+
+                if (jogadorAtual == 'O' && contraPC)
+                    JogadaComputador();
+                else
+                    JogadaJogador();
+
+                bool verificaVitoria = VerificarVitoria();
+
+                bool verificaEmpate = VerificarEmpate();
+
+                if (verificaVitoria == true)
+                {
+                    ExibirTabuleiro();
+
+                    if (jogadorAtual == 'X')
+                        PontosVitoriaPlayer1++;
+                    else if (!contraPC)
+                        PontosVitoriaPlayer2++;
+                    else
+                        PontosVitoriaComputador++;
+
+                    TelaFinal();
+                }
+
+                if (verificaEmpate)
+                {
+                    ExibirTabuleiro();
+
+                    PontosEmpates++;
+
+                    Console.WriteLine($"Empate!");
+
+                    TelaFinal();
+                }
+
+                if (!verificaVitoria && !verificaEmpate)
+                    TrocarJogador();
+            }
+
+            TelaJogo = true;
+        }
+
+        static void ExibirRanking()
+        {
+            Console.Clear();
+
+            while (TelaRanking)
+            {
+                Console.WriteLine("PONTUAÇÃO");
+                Console.WriteLine($"JOGADOR 1: {PontosVitoriaPlayer1}");
+                Console.WriteLine($"JOGADOR 2: {PontosVitoriaPlayer2}");
+                Console.WriteLine($"COMPUTADOR: {PontosVitoriaComputador}");
+                Console.WriteLine($"EMPATES: {PontosEmpates}");
+
+                Console.WriteLine($"1 - VOLTAR");
+                int[] opcoesValidas = { 1 };
+                string opcaoSelecionada = Console.ReadLine();
+                bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
+
+                if (!opcaoValida)
+                {
+                    Console.WriteLine("Selecione uma opção válida!");
+                    TelaRanking = true;
+                }
+                else
+                {
+                    switch (opcaoSelecionada)
+                    {
+                        case "1":
+                            TelaRanking = false;
+                            break;
+                    }
+                }
+            }
+
+            TelaRanking = true;
+        }
+
+        static void TelaFinal()
         {
             while (TelaJogarNovamente)
             {
+                Console.Clear(); // Limpa a tela do console
+                Console.WriteLine($"JOGADOR {jogadorAtual} VENCEU!\n"); //Mostra na tela a opção de sair
+
                 Console.WriteLine("1 - JOGAR NOVAMENTE"); //Mostra na tela a opção de sair
                 Console.WriteLine("2 - RANKING"); //Mostra na tela a opção de sair
                 Console.WriteLine("3 - TELA INICIAL"); //Mostra na tela a opção de sair
@@ -218,7 +297,7 @@ namespace MyApp
                 if (!opcaoValida)
                 {
                     Console.WriteLine("Selecione uma opção válida!");
-                    telaChamada = true;
+                    TelaJogo = true;
                 }
                 else
                 {
@@ -230,19 +309,21 @@ namespace MyApp
                                 tabuleiro[i] = (char)('1' + i);
 
                             jogadorAtual = 'X'; // volta pro X começar
-                            Console.Clear();// limpa a tela antes do novo jogo
+                            TelaJogarNovamente = false;
                             break;
                         case "2":
                             ExibirRanking();
                             TelaJogarNovamente = true;
                             break;
                         case "3":
-                            telaChamada = false;
+                            TelaJogo = false;
                             TelaJogarNovamente = false;
                             break;
                     }
                 }
             }
+
+            TelaJogarNovamente = true;
         }
 
         static void ResetarVariaveis()
@@ -250,16 +331,16 @@ namespace MyApp
             for (int i = 0; i < tabuleiro.Length; i++)
                 tabuleiro[i] = (char)('1' + i);
 
-            jogadorAtual = 'X';
-            contraPC = false;
-            TelaInicial = true;
-            TelaPlayerOuPC = true;
-            TelaDificuldade = true;
-            TelaPlayer = true;
-            TelaJogarNovamente = true;
-            TelaRanking = true;
-            Principal = true;
-            TelaJogo = true;
+            //
+            //contraPC = false;
+            //TelaInicial = true;
+            //TelaPlayerOuPC = true;
+            //TelaDificuldade = true;
+            //TelaPlayer = true;
+            //TelaJogarNovamente = true;
+            //TelaRanking = true;
+            //Principal = true;
+            //TelaJogo = true;
         }
 
         static void JogadaJogador()
@@ -417,40 +498,6 @@ namespace MyApp
                     return true;
             }
             return false;
-        }
-
-        public static void ExibirRanking()
-        {
-            Console.Clear();
-            TelaRanking = true;
-
-            while (TelaRanking)
-            {
-                Console.WriteLine("PONTUAÇÃO");
-                Console.WriteLine($"JOGADOR 1: {PontosVitoriaPlayer1}");
-                Console.WriteLine($"JOGADOR 1: {PontosVitoriaPlayer2}");
-                Console.WriteLine($"EMPATES 1: {PontosEmpates}");
-
-                Console.WriteLine($"1 - VOLTAR");
-                int[] opcoesValidas = { 1 };
-                string opcaoSelecionada = Console.ReadLine();
-                bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
-
-                if (!opcaoValida)
-                {
-                    Console.WriteLine("Selecione uma opção válida!");
-                    TelaRanking = true;
-                }
-                else
-                {
-                    switch (opcaoSelecionada)
-                    {
-                        case "1":
-                            TelaRanking = false;
-                            break;
-                    }
-                }
-            }
         }
 
         static bool VerificarEmpate()
