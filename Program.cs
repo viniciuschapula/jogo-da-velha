@@ -49,7 +49,7 @@ namespace MyApp
 
             // Desenha o tabuleiro com as posições e símbolos preenchidos
             Console.WriteLine("-------------");
-            Console.WriteLine($"| {tabuleiro[0]} | {tabuleiro[1]} | {tabuleiro[2]} |");
+            Console.WriteLine($"| {tabuleiro[0]} | {tabuleiro[1]} | {tabuleiro[2]} |"); 
             Console.WriteLine($"| {tabuleiro[3]} | {tabuleiro[4]} | {tabuleiro[5]} |");
             Console.WriteLine($"| {tabuleiro[6]} | {tabuleiro[7]} | {tabuleiro[8]} |");
             Console.WriteLine("-------------");
@@ -60,11 +60,17 @@ namespace MyApp
             while (TelaInicial)
             {
                 Console.Clear();
-                Console.WriteLine("JOGO DA VELHA"); // Mostra o título na tela
+                Console.WriteLine("JOGO DA VELHA \n"); // Mostra o título na tela
+
+                Console.WriteLine("RANKING");
+                Console.WriteLine($"JOGADOR 1: {PontosVitoriaPlayer1}");
+                Console.WriteLine($"JOGADOR 2: {PontosVitoriaPlayer2}");
+                Console.WriteLine($"COMPUTADOR: {PontosVitoriaComputador}");
+                Console.WriteLine($"EMPATES: {PontosEmpates}\n");
+
                 Console.WriteLine("1 - JOGAR"); // Mostra na tela a opção de para o programa
-                Console.WriteLine("2 - RANKING"); // Mostra na tela a opção de para o programa
-                Console.WriteLine("3 - SAIR"); // Mostra na tela a opção de para o programa
-                int[] opcoesValidas = { 1, 2, 3 };
+                Console.WriteLine("2 - SAIR"); // Mostra na tela a opção de para o programa
+                int[] opcoesValidas = { 1, 2};
                 string opcaoSelecionada = Console.ReadLine();
                 bool opcaoValida = ValidarOpcao(opcaoSelecionada, opcoesValidas);
 
@@ -80,9 +86,6 @@ namespace MyApp
                             TelaInicial = false;
                             break;
                         case "2":
-                            ExibirRanking();
-                            break;
-                        case "3":
                             Environment.Exit(0);
                             return;
                     }
@@ -222,6 +225,8 @@ namespace MyApp
                     else
                         PontosVitoriaComputador++;
 
+                    Console.WriteLine($"JOGADOR {jogadorAtual} VENCEU!\n"); //Mostra na tela a opção de sair
+
                     TelaFinal();
                 }
 
@@ -231,7 +236,7 @@ namespace MyApp
 
                     PontosEmpates++;
 
-                    Console.WriteLine($"Empate!");
+                    Console.WriteLine($"EMPATE!!\n"); //Mostra na tela a opção de sair
 
                     TelaFinal();
                 }
@@ -249,11 +254,11 @@ namespace MyApp
 
             while (TelaRanking)
             {
-                Console.WriteLine("PONTUAÇÃO");
+                Console.WriteLine("PONTUAÇÃO\n");
                 Console.WriteLine($"JOGADOR 1: {PontosVitoriaPlayer1}");
                 Console.WriteLine($"JOGADOR 2: {PontosVitoriaPlayer2}");
                 Console.WriteLine($"COMPUTADOR: {PontosVitoriaComputador}");
-                Console.WriteLine($"EMPATES: {PontosEmpates}");
+                Console.WriteLine($"EMPATES: {PontosEmpates}\n");
 
                 Console.WriteLine($"1 - VOLTAR");
                 int[] opcoesValidas = { 1 };
@@ -271,6 +276,7 @@ namespace MyApp
                     {
                         case "1":
                             TelaRanking = false;
+                            Console.Clear();
                             break;
                     }
                 }
@@ -283,9 +289,6 @@ namespace MyApp
         {
             while (TelaJogarNovamente)
             {
-                Console.Clear(); // Limpa a tela do console
-                Console.WriteLine($"JOGADOR {jogadorAtual} VENCEU!\n"); //Mostra na tela a opção de sair
-
                 Console.WriteLine("1 - JOGAR NOVAMENTE"); //Mostra na tela a opção de sair
                 Console.WriteLine("2 - RANKING"); //Mostra na tela a opção de sair
                 Console.WriteLine("3 - TELA INICIAL"); //Mostra na tela a opção de sair
@@ -330,17 +333,6 @@ namespace MyApp
         {
             for (int i = 0; i < tabuleiro.Length; i++)
                 tabuleiro[i] = (char)('1' + i);
-
-            //
-            //contraPC = false;
-            //TelaInicial = true;
-            //TelaPlayerOuPC = true;
-            //TelaDificuldade = true;
-            //TelaPlayer = true;
-            //TelaJogarNovamente = true;
-            //TelaRanking = true;
-            //Principal = true;
-            //TelaJogo = true;
         }
 
         static void JogadaJogador()
@@ -450,8 +442,6 @@ namespace MyApp
                 if (tabuleiro[lado - 1] != 'X' && tabuleiro[lado - 1] != 'O')
                     return lado;
 
-
-
             // Se nada disponível, joga aleatório
             return JogadaAleatoria();
         }
@@ -505,6 +495,7 @@ namespace MyApp
             foreach (char c in tabuleiro)
                 if (c != 'X' && c != 'O')
                     return false;
+
             return true;
         }
 
