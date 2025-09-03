@@ -7,7 +7,8 @@ namespace MyApp
     internal class Program
     {
         static char[] tabuleiro = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        static char jogadorAtual = 'X';
+        static char charDaVez = 'X';
+        static int jogadorDaVez = 1;
         static bool contraPC = false;
         static Dificuldade dificuldade;
         static bool TelaInicial = true;
@@ -130,7 +131,7 @@ namespace MyApp
 
                 Console.WriteLine("Você escolheu jogar contra o computador!");
                 Console.WriteLine("Jogador será X e o Computador será O.");
-                jogadorAtual = 'X'; // jogador sempre começa como X contra o Computador
+                charDaVez = 'X'; // jogador sempre começa como X contra o Computador
 
                 Console.Clear();
 
@@ -162,7 +163,7 @@ namespace MyApp
                 Console.Clear();
                 //Mostra na tela o modo de jogo e qual opção o jogador gostara de ir
                 Console.WriteLine("JOGADOR 1 ESCOLHA:");
-                Console.WriteLine("1 - X ");
+                Console.WriteLine("1 - X");
                 Console.WriteLine("2 - O");
 
                 int[] opcoesValidas = { 1, 2 };
@@ -180,14 +181,14 @@ namespace MyApp
                     Console.WriteLine();
 
                     // Define jogadorAtual baseado na escolha, se inválida, assume 'X' por padrão
-                    jogadorAtual = opcaoSelecionada == "1" ? 'X' : 'O';
+                    charDaVez = opcaoSelecionada == "1" ? 'X' : 'O';
 
                     // Player 2 recebe automaticamente o outro símbolo
-                    char jogador2 = jogadorAtual == 'X' ? 'O' : 'X';
+                    char jogador2 = charDaVez == 'X' ? 'O' : 'X';
 
                     Console.Clear(); // Limpa a tela do console
                                      // Mostra para o Player 2 qual símbolo ele terá
-                    Console.WriteLine($"Jogador 1 será {jogadorAtual}.");
+                    Console.WriteLine($"Jogador 1 será {charDaVez}.");
                     Console.WriteLine($"Jogador 2 será {jogador2}.");
                     Console.WriteLine("Pressione ENTER para continuar...");
                     Console.ReadLine();// Aguarda o jogador pressionar ENTER antes de continuar
@@ -205,7 +206,7 @@ namespace MyApp
             {
                 ExibirTabuleiro();
 
-                if (jogadorAtual == 'O' && contraPC)
+                if (jogadorDaVez == 2 && contraPC)
                     JogadaComputador();
                 else
                     JogadaJogador();
@@ -218,14 +219,14 @@ namespace MyApp
                 {
                     ExibirTabuleiro();
 
-                    if (jogadorAtual == 'X')
+                    if (jogadorDaVez == 1)
                         PontosVitoriaPlayer1++;
                     else if (!contraPC)
                         PontosVitoriaPlayer2++;
                     else
                         PontosVitoriaComputador++;
-
-                    Console.WriteLine($"JOGADOR {jogadorAtual} VENCEU!\n"); //Mostra na tela a opção de sair
+                    
+                    Console.WriteLine($"PLAYER {jogadorDaVez} VENCEU!\n"); //Mostra na tela a opção de sair
 
                     TelaFinal();
                 }
@@ -311,7 +312,7 @@ namespace MyApp
                             for (int i = 0; i < tabuleiro.Length; i++)
                                 tabuleiro[i] = (char)('1' + i);
 
-                            jogadorAtual = 'X'; // volta pro X começar
+                            charDaVez = 'X'; // volta pro X começar
                             TelaJogarNovamente = false;
                             break;
                         case "2":
@@ -340,13 +341,13 @@ namespace MyApp
             int posicao;
             while (true)
             {
-                Console.Write($"Jogador {jogadorAtual}, escolha uma posição (1-9): ");
+                Console.Write($"Jogador {charDaVez}, escolha uma posição (1-9): ");
                 string entrada = Console.ReadLine();
                 if (int.TryParse(entrada, out posicao) && posicao >= 1 && posicao <= 9)
                 {
                     if (tabuleiro[posicao - 1] != 'X' && tabuleiro[posicao - 1] != 'O')
                     {
-                        tabuleiro[posicao - 1] = jogadorAtual;
+                        tabuleiro[posicao - 1] = charDaVez;
                         break;
                     }
                     else
@@ -392,7 +393,7 @@ namespace MyApp
             }
 
             Console.WriteLine($"Computador escolheu a posição {posicao}");
-            tabuleiro[posicao - 1] = jogadorAtual;
+            tabuleiro[posicao - 1] = charDaVez;
             System.Threading.Thread.Sleep(1000);
         }
 
@@ -465,7 +466,8 @@ namespace MyApp
         {
             // Se o jogador atual for X, passa a ser O.
             // Se não for X (ou seja, for O), passa a ser X, por isso os : servem, eles verificam se não é, e o ponto de interrogação verifica se é verdadeiro.
-            jogadorAtual = jogadorAtual == 'X' ? 'O' : 'X';
+            charDaVez = charDaVez == 'X' ? 'O' : 'X';
+            jogadorDaVez = jogadorDaVez == 1 ? 2 : 1;
         }
 
         static bool VerificarVitoria()
@@ -484,7 +486,7 @@ namespace MyApp
                 int posicaoA = combinacoes[i, 0], posicaoB = combinacoes[i, 1], posicaC = combinacoes[i, 2];
 
                 // Verifica se a combinação da matriz da vez é uma combinação de vitoria
-                if (tabuleiro[posicaoA] == jogadorAtual && tabuleiro[posicaoB] == jogadorAtual && tabuleiro[posicaC] == jogadorAtual)
+                if (tabuleiro[posicaoA] == charDaVez && tabuleiro[posicaoB] == charDaVez && tabuleiro[posicaC] == charDaVez)
                     return true;
             }
             return false;
