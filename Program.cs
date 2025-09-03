@@ -49,11 +49,13 @@ namespace MyApp
             Console.Clear(); // Limpa a tela para colocar o tabuleiro.
 
             // Desenha o tabuleiro com as posições e símbolos preenchidos
-            Console.WriteLine("-------------");
-            Console.WriteLine($"| {tabuleiro[0]} | {tabuleiro[1]} | {tabuleiro[2]} |"); 
-            Console.WriteLine($"| {tabuleiro[3]} | {tabuleiro[4]} | {tabuleiro[5]} |");
-            Console.WriteLine($"| {tabuleiro[6]} | {tabuleiro[7]} | {tabuleiro[8]} |");
-            Console.WriteLine("-------------");
+            Console.WriteLine($" {tabuleiro[0]} | {tabuleiro[1]} | {tabuleiro[2]} ");
+            Console.WriteLine("---|---|---");
+
+            Console.WriteLine($" {tabuleiro[3]} | {tabuleiro[4]} | {tabuleiro[5]} ");
+            Console.WriteLine("---|---|---");
+
+            Console.WriteLine($" {tabuleiro[6]} | {tabuleiro[7]} | {tabuleiro[8]} ");
         }
 
         static void ExibirTelaInicial()
@@ -62,6 +64,10 @@ namespace MyApp
             {
                 Console.Clear();
                 Console.WriteLine("JOGO DA VELHA \n"); // Mostra o título na tela
+                Console.WriteLine("Anelise Ferreira Alves - 2025106346");
+                Console.WriteLine("Lucas Henrique - ");
+                Console.WriteLine("Vinicius de Oliveira Chapula - 2021206186");
+                Console.WriteLine("Vinicius Henrique Narciso Biazzetto - 2025106462\n");
 
                 Console.WriteLine("RANKING");
                 Console.WriteLine($"JOGADOR 1: {PontosVitoriaPlayer1}");
