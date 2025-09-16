@@ -65,7 +65,7 @@ namespace MyApp
                 Console.Clear();
                 Console.WriteLine("JOGO DA VELHA \n"); // Mostra o título na tela
                 Console.WriteLine("Anelise Ferreira Alves - 2025106346");
-                Console.WriteLine("Lucas Henrique - 2025105504");
+                Console.WriteLine("Lucas Kauan Kraj - 2025105504");
                 Console.WriteLine("Vinicius de Oliveira Chapula - 2021206186");
                 Console.WriteLine("Vinicius Henrique Narciso Biazzetto - 2025106462\n");
 
