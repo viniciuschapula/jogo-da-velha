@@ -1,0 +1,14 @@
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\bin\Debug\net8.0\jogo-da-velha.exe
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\bin\Debug\net8.0\jogo-da-velha.deps.json
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\bin\Debug\net8.0\jogo-da-velha.runtimeconfig.json
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\bin\Debug\net8.0\jogo-da-velha.dll
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\bin\Debug\net8.0\jogo-da-velha.pdb
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.AssemblyInfoInputs.cache
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.AssemblyInfo.cs
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.csproj.CoreCompileInputs.cache
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.dll
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\refint\jogo-da-velha.dll
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.pdb
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\jogo-da-velha.genruntimeconfig.cache
+C:\Repositories\.NET\Faculdade\jogo\jogo-da-velha\obj\Debug\net8.0\ref\jogo-da-velha.dll
