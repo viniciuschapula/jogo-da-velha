@@ -320,7 +320,11 @@ void TelaFinal()
                     for (int i = 0; i < tabuleiro.Length; i++)
                         tabuleiro[i] = (char)('1' + i);
 
-                    charDaVez = 'X';
+                    if (jogadorDaVez == 2)
+                        charDaVez = charDaVez == 'X' ? 'O' : 'X';
+
+                    jogadorDaVez = 1;
+
                     TelaJogarNovamente = false;
                     break;
                 case "2":
@@ -370,30 +374,32 @@ void JogadaComputador()
 {
     int posicao = -1;
 
-    if (dificuldade == 1)
+    switch (dificuldade)
     {
-        posicao = JogadaAleatoria();
-    }
-    else if (dificuldade == 2)
-    {
-        posicao = EncontrarJogadaVencedora('X');
-        if (posicao == -1)
+        case 1:
             posicao = JogadaAleatoria();
-    }
-    else if (dificuldade == 3)
-    {
-        posicao = EncontrarJogadaVencedora('O');
+            break;
 
-        if (posicao == -1)
+        case 2:
             posicao = EncontrarJogadaVencedora('X');
+            if (posicao == -1)
+                posicao = JogadaAleatoria();
+            break;
 
-        if (posicao == -1)
-        {
-            if (tabuleiro[4] != 'X' && tabuleiro[4] != 'O')
-                posicao = 5;
-            else
-                posicao = EscolherMelhorPosicao();
-        }
+        case 3:
+            posicao = EncontrarJogadaVencedora('O');
+
+            if (posicao == -1)
+                posicao = EncontrarJogadaVencedora('X');
+
+            if (posicao == -1)
+            {
+                if (tabuleiro[4] != 'X' && tabuleiro[4] != 'O')
+                    posicao = 5;
+                else
+                    posicao = EscolherMelhorPosicao();
+            }
+            break;
     }
 
     Console.WriteLine($"Computador escolheu a posição {posicao}");
